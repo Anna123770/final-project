@@ -166,11 +166,9 @@ class Naive_Method():
         return flag
 
     def range(self,rectangle):
-        result = []
-        for i in self.points:
-            if rectangle.iscontains(i):
-                result.append(i)
-        return result
+        result1 = [p for p in self.points if rectangle.is_contains(p)]
+        return result1
+
 
 
 
