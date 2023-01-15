@@ -1,4 +1,3 @@
-import math
 import time
 
 
@@ -24,11 +23,11 @@ class Rectangle():
 
 
 
-class KD_Tree():
+class KDTree():
     def __init__(self, data):
         self.dims = len(data[0])  # Total point
         self.nearest_point = None
-        self.nearest_dist = math.inf  # Init value with INF
+        self.nearest_dist = float("inf")  # Init value with INF
 
     def insert(self, current_data, split_dim):
         # Set recursive exit: exit when all samples are divided
@@ -53,7 +52,7 @@ class KD_Tree():
 
     # Calculate the Euclidean distance between two points
     def calculate_distance(self, point1, point2):
-        return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+        return pow((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
 
     # Pass in the root node of the kd tree and the point element to be searched, and search the nearest neighbor of the element
     def neighbor_query(self, root, point):
@@ -85,8 +84,8 @@ class KD_Tree():
             else:
                 self.neighbor_query(root.lchild, point)
 
-    def get_nearest_point(self, root, element):
-        self.neighbor_query(root, element)
+    def get_nearest_point(self, root, point):
+        self.neighbor_query(root, point)
         return self.nearest_point.value, self.nearest_dist
 
     def query(self, node, point):
@@ -167,8 +166,11 @@ class Naive_Method():
         return flag
 
     def range(self,rectangle):
-        result1 = [p for p in self.points if rectangle.is_contains(p)]
-        return result1
+        result = []
+        for i in self.points:
+            if rectangle.iscontains(i):
+                result.append(i)
+        return result
 
 
 
@@ -188,7 +190,7 @@ def performance_test():
     print(f'Naive method: {end - start}ms')
 
     # k-d tree
-    kd = KD_Tree(points_choose_list)
+    kd = KDTree(points_choose_list)
     root = kd.insert(points_choose_list, 0)
     start = int(round(time.time() * 1000))
     result2 = kd.range(Rectangle([500, 500], [504, 504]), root)
